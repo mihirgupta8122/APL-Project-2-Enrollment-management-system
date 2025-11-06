@@ -74,8 +74,6 @@ public class EnrollmentSystem {
             } else if (user_choice == 0) {
                 running = false;
                 System.out.println("\nExiting program. Goodbye!");
-            } else {
-                System.out.println("Invalid choice.");
             }
         }
         scanner.close();
@@ -269,9 +267,7 @@ public class EnrollmentSystem {
                 System.out.println("Number of courses updated.");
             } else if (field_choice == 0) {
                 modifying = false;
-            } else {
-                System.out.println("Invalid selection.");
-            }
+            } 
         }
     }
 }

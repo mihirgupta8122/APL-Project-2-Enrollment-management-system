@@ -85,7 +85,7 @@ def find_student_index_by_id(student_list, id_to_find):
 
 
 # Helper: Prompts for an ID and finds the student
-def promt_and_find_student_index(student_list):
+def prompt_and_find_student_index(student_list):
     id_to_find = get_valid_integer("Enter Student ID: ")
     index = find_student_index_by_id(student_list, id_to_find)
 
@@ -147,7 +147,7 @@ def display_students(student_list):
 def modify_student(student_list):
     print("\n--- Modify Student Record ---")
 
-    index = promt_and_find_student_index(student_list)
+    index = prompt_and_find_student_index(student_list)
 
     if index != -1:
         modify_student_menu(student_list, index)
@@ -158,7 +158,7 @@ def modify_student(student_list):
 def remove_student(student_list):
     print("\n--- Remove Student ---")
 
-    index = promt_and_find_student_index(student_list)
+    index = prompt_and_find_student_index(student_list)
 
     if index != -1:
         student = student_list[index]
