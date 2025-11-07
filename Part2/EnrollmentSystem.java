@@ -40,26 +40,35 @@ public class EnrollmentSystem {
 
         @Override
         public String toString() {
-            return "\nStudent ID: " + id + "\n"
-                    + "  Name: " + firstName + " " + lastName + "\n"
-                    + "  DOB: " + dob + "\n"
-                    + "  Gender: " + gender + "\n"
-                    + "  GPA: " + gpa + "\n"
-                    + "  Program: " + program + "\n"
-                    + "  Semester: " + semester + "\n"
-                    + "  Courses: " + numCourses;
+            return String.format(
+                """
+
+                Student ID: %d
+                   Name: %s %s
+                   DOB: %s
+                   Gender: %s
+                   GPA: %.2f
+                   Program: %s
+                   Semester: %s
+                   Number of Courses: %d""",
+                id, firstName, lastName, dob, gender, gpa, program, semester, numCourses);
         }
     }
 
     public static void main(String[] args) {
         boolean running = true;
         while (running) {
-            System.out.println("\n--- SAIT Enrollment System ---");
-            System.out.println("1. Add New Student");
-            System.out.println("2. Display All Students");
-            System.out.println("3. Modify Student Record");
-            System.out.println("4. Remove Student");
-            System.out.println("0. Exit");
+            System.out.println(
+                """
+
+                --- SAIT Enrollment System ---
+                1. Add New Student
+                2. Display All Students
+                3. Modify Student Record
+                4. Remove Student
+                0. Exit
+                """
+                );
 
             int user_choice = GetValidIntegerRange("Enter your choice: ", 0, 4);
 
@@ -84,7 +93,7 @@ public class EnrollmentSystem {
         StudentRecord student_to_add = CreateNewStudent(next_student_id.value);
         student_list.add(student_to_add);
         next_student_id.value = next_student_id.value + 1;
-        System.out.println("\nStudent added successfully with ID: " + student_to_add.id);
+        System.out.printf("%nStudent added successfully with ID: %d%n", student_to_add.id);
     }
 
     public static void DisplayStudents(List<StudentRecord> student_list) {
@@ -112,7 +121,7 @@ public class EnrollmentSystem {
         int index = PromptAndFindStudentIndex(student_list);
         if (index != -1) {
             StudentRecord student = student_list.get(index);
-            System.out.println("Found student: " + student.firstName + " " + student.lastName);
+            System.out.printf("Found student: %s %s%n", student.firstName, student.lastName);
             String confirmation = GetYesNo("Are you sure you want to remove? (Y/N): ");
             if (confirmation.equals("Y")) {
                 student_list.remove(index);
@@ -151,7 +160,7 @@ public class EnrollmentSystem {
             if (number >= min && number <= max) {
                 return number;
             } else {
-                System.out.println("Invalid choice. Please enter a number between " + min + " and " + max + ".");
+                System.out.printf("Invalid choice. Please enter a number between %d and %d.%n", min, max);
             }
         }
     }
@@ -199,7 +208,7 @@ public class EnrollmentSystem {
         int id_to_find = GetValidInteger("Enter Student ID: ");
         int index = FindStudentIndexByID(student_list, id_to_find);
         if (index == -1) {
-            System.out.println("\nStudent with ID " + id_to_find + " not found.");
+            System.out.printf("%nStudent with ID %d not found.%n", id_to_find);
         }
         return index;
     }
@@ -230,14 +239,19 @@ public class EnrollmentSystem {
         boolean modifying = true;
         while (modifying) {
             StudentRecord student = student_list.get(index);
-            System.out.println("\n--- Modifying Student: " + student.firstName + " " + student.lastName + " ---");
-            System.out.println("1. First Name (" + student.firstName + ")");
-            System.out.println("2. Last Name (" + student.lastName + ")");
-            System.out.println("3. GPA (" + student.gpa + ")");
-            System.out.println("4. Semester (" + student.semester + ")");
-            System.out.println("5. Program (" + student.program + ")");
-            System.out.println("6. Number of Courses (" + student.numCourses + ")");
-            System.out.println("0. Finish Modifying");
+            System.out.println(String.format(
+                """
+
+                --- Modifying Student: %1$s %2$s ---
+                1. First Name (%1$s)
+                2. Last Name (%2$s)
+                3. GPA (%3$.2f)
+                4. Semester (%4$s)
+                5. Program (%5$s)
+                6. Number of Courses (%6$d)
+                0. Finish Modifying
+                """, 
+                student.firstName, student.lastName, student.gpa, student.semester, student.program, student.numCourses));
 
             int field_choice = GetValidIntegerRange("Enter field to modify: ", 0, 6);
 

@@ -133,14 +133,18 @@ def display_students(student_list):
         print("\n--- List of Enrolled Students ---")
 
         for student in student_list:
-            print(f"\nStudent ID: {student.student_id}\n"
-                f"   Name: {student.first_name} {student.last_name}\n"
-                f"   DOB: {student.dob}\n"
-                f"   Gender: {student.gender}\n"
-                f"   GPA: {student.gpa}\n"
-                f"   Program: {student.program}\n"
-                f"   Semester: {student.semester}\n"
-                f"   Courses: {student.num_courses}")
+            print(
+f"""
+
+Student ID: {student.student_id}
+   Name: {student.first_name} {student.last_name}
+   DOB: {student.dob}
+   Gender: {student.gender}
+   GPA: {student.gpa:.2f}
+   Program: {student.program}
+   Semester: {student.semester}
+   Number of Courses: {student.num_courses}"""
+            )
 
 
 # 3. Modify Student
@@ -179,14 +183,19 @@ def modify_student_menu(student_list, index):
 
     while modifying:
         student = student_list[index]
-        print(f"\n--- Modifying Student: {student.first_name} {student.last_name} ---\n"
-            f"1. First Name ({student.first_name})\n"
-            f"2. Last Name ({student.last_name})\n"
-            f"3. GPA ({student.gpa})\n"
-            f"4. Semester ({student.semester})\n"
-            f"5. Program ({student.program})\n"
-            f"6. Number of Courses ({student.num_courses})\n"
-            f"0. Finish Modifying")
+        print(
+f"""
+
+--- Modifying Student: {student.first_name} {student.last_name} ---
+1. First Name ({student.first_name})
+2. Last Name ({student.last_name})
+3. GPA ({student.gpa:.2f})
+4. Semester ({student.semester})
+5. Program ({student.program})
+6. Number of Courses ({student.num_courses})
+0. Finish Modifying
+"""
+        )
 
         field_choice = get_valid_integer_range("Enter field to modify: ", 0, 6)
 
@@ -225,12 +234,17 @@ def main():
 
     running = True
     while running:
-        print("\n--- SAIT Enrollment System ---\n" \
-        "1. Add New Student\n" \
-        "2. Display All Students\n" \
-        "3. Modify Student Record\n" \
-        "4. Remove Student\n" \
-        "0. Exit")
+        print(
+"""
+
+--- SAIT Enrollment System ---
+1. Add New Student
+2. Display All Students
+3. Modify Student Record
+4. Remove Student
+0. Exit
+"""
+        )
 
         user_choice = get_valid_integer_range("Enter your choice: ", 0, 4)
 
