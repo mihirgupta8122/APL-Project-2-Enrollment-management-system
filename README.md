@@ -66,11 +66,11 @@ python enrollment_system.py
 
 ### Output Preview
 Both programs have an identical console interface. The program starts, displays the main menu, and waits for user input.
-([Output preview](<Screenshot 2025-11-07 210722.png>))
+![Output preview](<Screenshot 2025-11-07 210722.png>)
 
 ## Built With
 
-(Java Version 8 or above.(https://www.oracle.com/ca-en/java/technologies/javase/javase8-archive-downloads.html)
+[Java 15 and up](https://www.oracle.com/java/technologies/javase/jdk15-archive-downloads.html) (Java Version)
 
 
 [Python 3.13.7](https://www.python.org/downloads/release/python-3137/) (Python Version)
