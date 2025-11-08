@@ -5,7 +5,7 @@
 ## Overview
 This application is a console based student enrollment system for SAIT, written in both Java and Python. It is suppose to allow the user to manage multiple student records by adding students, displaying all students on record, modifying a student's information, and removing them from the list.
 
-By coding the same scenario in two different languages, it gives us an easy way to compare both of the languages when they are programmed to do the exact same thing, we were focusing on key concepts that were covered in class like:
+Coding the same thing in two seperate languages gives us a way to compare both of them when they are programmed to do the exact same thing, focusing on key concepts covered in class like:
 
 1. Static vs. Dynamic Data Types and Type Binding
 
@@ -20,7 +20,7 @@ Our Java implementation is built inside of a single EnrollmentSystem class. It f
 
 1. Static Typing: All of the variables, parameters, and return types are specifically declared (ex, List<StudentRecord>, int, and String). Doing this helps to provide type safety during compile time.
 
-2. Class-Based Design: All of the methods and "global" variables are static, belonging to the EnrollmentSystem class.
+2. Class Based Design: All of the methods and "global" variables are static, belonging to the EnrollmentSystem class.
 
 3. Argument Passing: To handle the automatic incrementing of the 'next_student_id', we used a custom IntRef wrapper class. By doing this, we were able to pass the integer by reference and change its value from inside of a method, which we used as solution to its "pass by value" nature.
 
@@ -65,7 +65,7 @@ python enrollment_system.py
 (Note: You might need to use python3 depending on your system's configuration)
 
 ### Output Preview
-Both programs have an identical look to the console The program starts, displays the main menu, and waits for user input.
+The outputs of both the Python and the Java code looks the same. They both use the terminal and they both function pretty much the same. When the program starts, it shows you the main menu, and waits for an input from the user who will make the first choice from the menu options. 
 ![Output preview](<Screenshot 2025-11-07 210722.png>)
 
 ## Built With
