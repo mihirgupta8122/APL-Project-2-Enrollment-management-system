@@ -4,34 +4,41 @@ import java.util.Scanner;
 
 /**
  * SAIT Enrollment Management System
- * This program is a a student enrollment system that allows the user to add, display, modify, and remove student records.
+ * This program is a student enrollment system that allows the user to add, display, modify, and remove student records.
  * It uses a list to store student records and provides a menu-driven interface for user interaction.
+ * This Java version is designed to be functionally identical to its Python counterpart for comparison.
  */
 public class EnrollmentSystem {
 
-     //A wrapper class to emulate pass by reference for an integer
+    /**
+     * A wrapper class to emulate pass-by-reference for an integer.
+     * Since Java passes primitives like 'int' by value, we pass an
+     * object like this IntRef by reference-value instead, which will let us
+     * change its internal value from inside a method.
+     */
     static class IntRef {
         public int value;
         public IntRef(int value) { this.value = value; }
     }
 
+    //Class Level Variables 
+    //This is Java's way of handling a "global" state for the application.
+    //These are 'static' so they are shared by all methods in the class.
+
+    /** The main data container for all student records. */
     static List<StudentRecord> studentList = new ArrayList<>();
+
+    /** The counter for new student IDs, wrapped in the IntRef class. */
     static IntRef nextStudentId = new IntRef(1000);
-    //Class Level (Static) Variables
-    //Java's way of handling a "global" state for the application.
 
-    //The main data container for all student records.
-    static List<StudentRecord> student_list = new ArrayList<>();
-
-    //The counter for new student IDs, wrapped in the IntRef class.
-    static IntRef next_student_id = new IntRef(1000);
-
-    //A shared Scanner object for all user input.
+    /** A single, shared Scanner object for all user input. */
     static Scanner scanner = new Scanner(System.in);
 
-    //This defines the structure of a student record.
+    /**
+     * This inner class defines the structure of a student record.
+     */
     public static class StudentRecord {
-        // These are all public for easy access
+        // These are all 'public' for easy access, matching the pseudocode's simple design
         public int id;
         public String firstName;
         public String lastName;
@@ -42,9 +49,12 @@ public class EnrollmentSystem {
         public String program;
         public int numCourses;
 
+        /** A default constructor. */
         public StudentRecord() {}
 
-        //A parameterized constructor for creating a full student record at once. 
+        /**
+         * A parameterized constructor for creating a full student record at once.
+         */
         public StudentRecord(int id, String firstName, String lastName, String dob, String gender,
                              float gpa, String semester, String program, int numCourses) {
             this.id = id;
@@ -58,8 +68,11 @@ public class EnrollmentSystem {
             this.numCourses = numCourses;
         }
 
-        
-        //Overrides the default toString() method for clean, formatted printing of student's details.
+        /**
+         * Overrides the default toString() method for clean, formatted printing of student's details.
+         * This uses Java's String.format() and text block features (since Java 15)
+         * to match the Python f-string output.
+         */
         @Override
         public String toString() {
             return String.format(
@@ -74,25 +87,21 @@ public class EnrollmentSystem {
                    Semester: %s
                    Number of Courses: %d""",
                 id, firstName, lastName, dob, gender, gpa, program, semester, numCourses);
-            //This was done to match the f string formatting in the python version as well as for readability
-            return "\nStudent ID: " + id + "\n"
-                    + "  Name: " + firstName + " " + lastName + "\n"
-                    + "  DOB: " + dob + "\n"
-                    + "  Gender: " + gender + "\n"
-                    + "  GPA: " + gpa + "\n"
-                    + "  Program: " + program + "\n"
-                    + "  Semester: " + semester + "\n"
-                    + "  Courses: " + numCourses;
         }
     }
 
-    
-     //This driver's only job is to run the main menu loop and delegate tasks to the appropriate subprograms.
+    /**
+     * This is the main driver of the program.
+     * Its only job is to run the main menu loop and delegate tasks
+     * to the appropriate subprograms
+     * @param args Command line arguments (not used).
+     */
     public static void main(String[] args) {
         boolean running = true;
         
-        //main application loop
+        //This is the main application loop
         while (running) {
+            //Display the main menu using a Java text block for readability
             System.out.println(
                 """
 
@@ -104,19 +113,13 @@ public class EnrollmentSystem {
                 0. Exit
                 """
                 );
-            //Display the main menu
-            System.out.println("\n--- SAIT Enrollment System ---");
-            System.out.println("1. Add New Student");
-            System.out.println("2. Display All Students");
-            System.out.println("3. Modify Student Record");
-            System.out.println("4. Remove Student");
-            System.out.println("0. Exit");
 
-            int userChoice = getValidIntegerRange("Enter your choice: ", 0, 4);
             //Get a validated menu choice by calling a helper method
-            int user_choice = GetValidIntegerRange("Enter your choice: ", 0, 4);
+            int userChoice = getValidIntegerRange("Enter your choice: ", 0, 4);
 
+            //Based on the user choice, call the relevant subprogram.
             if (userChoice == 1) {
+                // Pass both the list and the ID counter
                 addStudent(studentList, nextStudentId);
             } else if (userChoice == 2) {
                 displayStudents(studentList);
@@ -125,111 +128,86 @@ public class EnrollmentSystem {
             } else if (userChoice == 4) {
                 removeStudent(studentList);
             } else if (userChoice == 0) {
-                running = false;
-            //Based on the user choice, call the relevant subprogram.
-            if (user_choice == 1) {
-                //Pass both the list and the ID counter
-                AddStudent(student_list, next_student_id);
-            } else if (user_choice == 2) {
-                DisplayStudents(student_list);
-            } else if (user_choice == 3) {
-                ModifyStudent(student_list);
-            } else if (user_choice == 4) {
-                RemoveStudent(student_list);
-            } else if (user_choice == 0) {
                 running = false; // Exit the while loop
                 System.out.println("\nExiting program. Goodbye!");
             }
         }
-        //Close the single static scanner
+        //Close the scanner
         scanner.close();
     }
 
-    public static void addStudent(List<StudentRecord> studentList, IntRef nextStudentId) {
     //Main Subprograms
     /**
      * This handles adding a new student.
-     * @param student_list The main list 
-     * @param next_student_id The ID counter 
+     * @param studentList The main list (passed by reference-value).
+     * @param nextStudentId The ID counter (passed as a mutable IntRef object).
      */
-    public static void AddStudent(List<StudentRecord> student_list, IntRef next_student_id) {
+    public static void addStudent(List<StudentRecord> studentList, IntRef nextStudentId) {
         System.out.println("\n--- Add New Student ---");
+        //Delegate creation to a helper, passing the current ID value
         StudentRecord studentToAdd = createNewStudent(nextStudentId.value);
+        
+        //Add the new student to the main list (modifies the original list)
         studentList.add(studentToAdd);
+        
+        //Increment the ID by changing the IntRef object's internal value.
+        //This change persists because 'nextStudentId' is a reference to an object.
         nextStudentId.value = nextStudentId.value + 1;
+        
         System.out.printf("%nStudent added successfully with ID: %d%n", studentToAdd.id);
-        //1. Delegate creation to a helper, passing the *current* ID value
-        StudentRecord student_to_add = CreateNewStudent(next_student_id.value);
-        
-        //2. Add the new student to the main list (modifies the original list)
-        student_list.add(student_to_add);
-        
-        //3. Increment the ID by modifying the IntRef object's value.
-        next_student_id.value = next_student_id.value + 1;
-        
-        System.out.println("\nStudent added successfully with ID: " + student_to_add.id);
     }
 
-    public static void displayStudents(List<StudentRecord> studentList) {
-        if (studentList.isEmpty()) {
     /**
      * Displays all students in the list.
-     * @param student_list The main list. We only read from it,
+     * @param studentList The main list. We only read from it,
+     * fulfilling the 'pass-by-VALUE' (read-only) intent from the pseudocode.
      */
-    public static void DisplayStudents(List<StudentRecord> student_list) {
-        if (student_list.isEmpty()) {
+    public static void displayStudents(List<StudentRecord> studentList) {
+        if (studentList.isEmpty()) {
             System.out.println("\nNo students in the system.");
         } else {
             System.out.println("\n--- List of Enrolled Students ---");
+            //Use a "for-each" loop to iterate over the list
             for (StudentRecord student : studentList) {
-            // Use a "for-each" loop to iterate over the list
-            for (StudentRecord student : student_list) {
                 // This implicitly calls the student.toString() method
                 System.out.println(student.toString());
             }
         }
     }
 
-    public static void modifyStudent(List<StudentRecord> studentList) {
     /**
-     * This handles modifying a student's information. It delegates pretty much all logic to helper methods.
-     * @param student_list The main list 
+     * This handles modifying a student's information. It delegates all logic to helper methods.
+     * @param studentList The main list (passed by reference-value).
      */
-    public static void ModifyStudent(List<StudentRecord> student_list) {
+    public static void modifyStudent(List<StudentRecord> studentList) {
         System.out.println("\n--- Modify Student Record ---");
+        //Find the student by their ID
         int index = promptAndFindStudentIndex(studentList);
-        //1. Find the student by their ID
-        int index = PromptAndFindStudentIndex(student_list);
         
-        //2. If the student was found (the index isn't -1), show the menu for modifying
+        //If the student was found (the index isn't -1), show the menu for modifying
         if (index != -1) {
             modifyStudentMenu(studentList, index);
             System.out.println("\nModifications saved.");
         }
     }
 
-    public static void removeStudent(List<StudentRecord> studentList) {
     /**
      * Handles removing a student.
-     * @param student_list The main list 
+     * @param studentList The main list (passed by reference-value).
      */
-    public static void RemoveStudent(List<StudentRecord> student_list) {
+    public static void removeStudent(List<StudentRecord> studentList) {
         System.out.println("\n--- Remove Student ---");
+        //Find the student
         int index = promptAndFindStudentIndex(studentList);
-        //1. Find the student
-        int index = PromptAndFindStudentIndex(student_list);
         
-        //2. If the student was found, ask for confirmation
+        //If the student was found, ask for confirmation
         if (index != -1) {
             StudentRecord student = studentList.get(index);
             System.out.printf("Found student: %s %s%n", student.firstName, student.lastName);
+            
             String confirmation = getYesNo("Are you sure you want to remove? (Y/N): ");
-            StudentRecord student = student_list.get(index);
-            System.out.println("Found student: " + student.firstName + " " + student.lastName);
             
-            String confirmation = GetYesNo("Are you sure you want to remove? (Y/N): ");
-            
-            //3. If confirmed, remove the student from the original list
+            //If confirmed, remove the student from the original list
             if (confirmation.equals("Y")) {
                 studentList.remove(index);
                 System.out.println("\nStudent removed successfully.");
@@ -239,34 +217,30 @@ public class EnrollmentSystem {
         }
     }
 
-    public static String getString(String promptMessage) {
-        System.out.print(promptMessage);
     //Helper Subprograms
 
     /**
      * HELPER: Gets a simple string input from the user.
-     * @param prompt_message The message to display to the user.
+     * @param promptMessage The message to display to the user.
      * @return The string entered by the user.
      */
-    public static String GetString(String prompt_message) {
-        System.out.print(prompt_message);
+    public static String getString(String promptMessage) {
+        System.out.print(promptMessage);
         return scanner.nextLine();
     }
 
-    public static int getValidInteger(String promptMessage) {
     /**
      * HELPER: Loops until a valid integer is entered.
-     * @param prompt_message The message to display.
+     * @param promptMessage The message to display.
      * @return The validated integer.
      */
-    public static int GetValidInteger(String prompt_message) {
+    public static int getValidInteger(String promptMessage) {
         boolean valid = false;
         int number = 0;
         while (!valid) {
             System.out.print(promptMessage);
             String input = scanner.nextLine();
             
-            //Static Typing
             //We have to explicitly try to parse the String into an int.
             //If it fails, a 'NumberFormatException' is thrown.
             try {
@@ -280,47 +254,42 @@ public class EnrollmentSystem {
         return number;
     }
 
-    public static int getValidIntegerRange(String promptMessage, int min, int max) {
     /**
-     * HELPER: Reuses GetValidInteger to get a number within a specific range.
-     * @param prompt_message The message to display.
-     * @param min The minimum allowed value.
-     * @param max The maximum allowed value.
+     * HELPER: Reuses getValidInteger to get a number within a specific range.
+     * @param promptMessage The message to display.
+     * @param min The minimum allowed value (inclusive).
+     * @param max The maximum allowed value (inclusive).
      * @return The validated integer within the specified range.
      */
-    public static int GetValidIntegerRange(String prompt_message, int min, int max) {
+    public static int getValidIntegerRange(String promptMessage, int min, int max) {
         int number;
-        while (true) {
-            number = getValidInteger(promptMessage);
         while (true) { //This will Loop indefinitely
-            //1. Get a valid integer (reusing another helper)
-            number = GetValidInteger(prompt_message);
+            //Get a valid integer (reusing another helper)
+            number = getValidInteger(promptMessage);
             
-            //2. Check if it's in the correct range
+            //Check if it's in the correct range
             if (number >= min && number <= max) {
                 return number; //Valid, exit the loop and return
             } else {
+                //Invalid range, print the error and loop back
                 System.out.printf("Invalid choice. Please enter a number between %d and %d.%n", min, max);
-                // Invalid range, print the error and loop back
-                System.out.println("Invalid choice. Please enter a number between " + min + " and " + max + ".");
             }
         }
     }
 
-    public static float getValidFloat(String promptMessage) {
     /**
      * HELPER: Loops until a valid float is entered.
-     * @param prompt_message The message to display.
+     * @param promptMessage The message to display.
      * @return The validated float.
      */
-    public static float GetValidFloat(String prompt_message) {
+    public static float getValidFloat(String promptMessage) {
         boolean valid = false;
         float number = 0.0f;
         while (!valid) {
             System.out.print(promptMessage);
             String input = scanner.nextLine();
             try {
-                // Same as GetValidInteger, but for 'float' instead of 'int'
+                // Same as getValidInteger, but for 'float' instead of 'int'
                 number = Float.parseFloat(input.trim());
                 valid = true;
             } catch (NumberFormatException e) {
@@ -330,13 +299,12 @@ public class EnrollmentSystem {
         return number;
     }
 
-    public static String getYesNo(String promptMessage) {
     /**
      * HELPER: Loops until the user enters "Y" or "N".
-     * @param prompt_message The message to display.
+     * @param promptMessage The message to display.
      * @return The validated string ("Y" or "N").
      */
-    public static String GetYesNo(String prompt_message) {
+    public static String getYesNo(String promptMessage) {
         while (true) {
             System.out.print(promptMessage);
             String input = scanner.nextLine().trim().toUpperCase();
@@ -348,46 +316,45 @@ public class EnrollmentSystem {
         }
     }
 
-    public static int findStudentIndexByID(List<StudentRecord> studentList, int idToFind) {
     /**
      * HELPER: Finds the list index of a student by their ID.
-     * @param student_list The main list (read-only).
-     * @param id_to_find The student ID to search for.
+     * @param studentList The main list (read-only).
+     * @param idToFind The student ID to search for.
      * @return The index of the student, or -1 if not found.
      */
-    public static int FindStudentIndexByID(List<StudentRecord> student_list, int id_to_find) {
+    public static int findStudentIndexByID(List<StudentRecord> studentList, int idToFind) {
         int index = 0;
-        while (index < studentList.size()) {
-            if (studentList.get(index).id == idToFind) {
-                return index;
         //Java's 'list.size()' is equivalent to Python's 'len(list)'
-        while (index < student_list.size()) {
+        while (index < studentList.size()) {
             //'list.get(index)' is equivalent to Python's 'list[index]'
-            if (student_list.get(index).id == id_to_find) {
-                return index; // Found
+            if (studentList.get(index).id == idToFind) {
+                return index; //Found
             }
             index = index + 1;
         }
         return -1; //Not found
     }
 
+    /**
+     * HELPER: Bundles the logic for prompting for and finding a student.
+     * @param studentList The main list.
+     * @return The index of the student, or -1 if not found.
+     */
     public static int promptAndFindStudentIndex(List<StudentRecord> studentList) {
         int idToFind = getValidInteger("Enter Student ID: ");
         int index = findStudentIndexByID(studentList, idToFind);
-    /**
-     * HELPER: Bundles the logic for prompting for and finding a student.
-     * @param student_list The main list.
-     * @return The index of the student, or -1 if not found.
-     */
-    public static int PromptAndFindStudentIndex(List<StudentRecord> student_list) {
-        int id_to_find = GetValidInteger("Enter Student ID: ");
-        int index = FindStudentIndexByID(student_list, id_to_find);
         if (index == -1) {
             System.out.printf("%nStudent with ID %d not found.%n", idToFind);
         }
         return index;
     }
 
+    /**
+     * HELPER: Handles the creation of a new StudentRecord by
+     * calling all the other 'Get' helpers.
+     * @param id The unique ID for the new student.
+     * @return A new, fully populated StudentRecord object.
+     */
     public static StudentRecord createNewStudent(int id) {
         String fname = getString("Enter First Name: ");
         String lname = getString("Enter Last Name: ");
@@ -397,7 +364,11 @@ public class EnrollmentSystem {
         String semester = getString("Enter Current Semester (e.g. Fall 2026): ");
         String program = getString("Enter Program: ");
         int numCourses = getValidInteger("Enter Number of Courses: ");
+        
+        // Create a new object instance
         StudentRecord newStudent = new StudentRecord();
+        
+        // Fill up the fields of the object with the given data
         newStudent.id = id;
         newStudent.firstName = fname;
         newStudent.lastName = lname;
@@ -407,50 +378,22 @@ public class EnrollmentSystem {
         newStudent.semester = semester;
         newStudent.program = program;
         newStudent.numCourses = numCourses;
+        
         return newStudent;
-    /**
-     * HELPER: Handles the creation of a new StudentRecord by
-     * calling all the other 'Get' helpers.
-     * @param id The unique ID for the new student.
-     * @return A new, fully populated StudentRecord object.
-     */
-    public static StudentRecord CreateNewStudent(int id) {
-        String fname = GetString("Enter First Name: ");
-        String lname = GetString("Enter Last Name: ");
-        String dob = GetString("Enter Date of Birth (YYYY-MM-DD): ");
-        String gender = GetString("Enter Gender: ");
-        float gpa = GetValidFloat("Enter Previous GPA: ");
-        String semester = GetString("Enter Current Semester (e.g. Fall 2026): ");
-        String program = GetString("Enter Program: ");
-        int num_courses = GetValidInteger("Enter Number of Courses: ");
-        
-        //Create a new object
-        StudentRecord new_student = new StudentRecord();
-        
-        //Fill up the fields of the object with the given data
-        new_student.id = id;
-        new_student.firstName = fname;
-        new_student.lastName = lname;
-        new_student.dob = dob;
-        new_student.gender = gender;
-        new_student.gpa = gpa;
-        new_student.semester = semester;
-        new_student.program = program;
-        new_student.numCourses = num_courses;
-        
-        return new_student;
     }
 
-    public static void modifyStudentMenu(List<StudentRecord> studentList, int index) {
     /**
      * HELPER: Manages the modification sub-menu.
-     * @param student_list The main list.
+     * @param studentList The main list.
      * @param index The index of the student to be modified.
      */
-    public static void ModifyStudentMenu(List<StudentRecord> student_list, int index) {
+    public static void modifyStudentMenu(List<StudentRecord> studentList, int index) {
         boolean modifying = true;
         while (modifying) {
+            //'student' is a reference variable pointing to the object in the list.
             StudentRecord student = studentList.get(index);
+            
+            //Display the sub-menu using a formatted text block
             System.out.println(String.format(
                 """
 
@@ -464,27 +407,15 @@ public class EnrollmentSystem {
                 0. Finish Modifying
                 """, 
                 student.firstName, student.lastName, student.gpa, student.semester, student.program, student.numCourses));
-            StudentRecord student = student_list.get(index);
-            
-            //Display the sub-menu
-            System.out.println("\n--- Modifying Student: " + student.firstName + " " + student.lastName + " ---");
-            System.out.println("1. First Name (" + student.firstName + ")");
-            System.out.println("2. Last Name (" + student.lastName + ")");
-            System.out.println("3. GPA (" + student.gpa + ")");
-            System.out.println("4. Semester (" + student.semester + ")");
-            System.out.println("5. Program (" + student.program + ")");
-            System.out.println("6. Number of Courses (" + student.numCourses + ")");
-            System.out.println("0. Finish Modifying");
 
             int fieldChoice = getValidIntegerRange("Enter field to modify: ", 0, 6);
 
+            // Branching the logic for the sub-menu
             if (fieldChoice == 1) {
                 String newVal = getString("Enter new First Name: ");
+                //Modifying 'student.firstName' modifies the original
+                //object in the 'studentList' because 'student' is a reference.
                 student.firstName = newVal;
-            //Branching the logic for the sub-menu
-            if (field_choice == 1) {
-                String new_val = GetString("Enter new First Name: ");
-                student.firstName = new_val;
                 System.out.println("First Name updated.");
             } else if (fieldChoice == 2) {
                 String newVal = getString("Enter new Last Name: ");
@@ -507,9 +438,7 @@ public class EnrollmentSystem {
                 student.numCourses = newVal;
                 System.out.println("Number of courses updated.");
             } else if (fieldChoice == 0) {
-                modifying = false;
-            } else if (field_choice == 0) {
-                modifying = false; //Exit the 'while (modifying)' loop
+                modifying = false; // Exit the 'while (modifying)' loop
             } 
         }
     }
