@@ -137,7 +137,7 @@ public class EnrollmentSystem {
             } else if (user_choice == 4) {
                 RemoveStudent(student_list);
             } else if (user_choice == 0) {
-                running = false; // xit the while loop
+                running = false; // Exit the while loop
                 System.out.println("\nExiting program. Goodbye!");
             }
         }
