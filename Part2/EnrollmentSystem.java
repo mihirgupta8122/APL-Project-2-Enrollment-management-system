@@ -4,11 +4,12 @@ import java.util.Scanner;
 
 /**
  * SAIT Enrollment Management System
- * This program is a a student enrollment system
+ * This program is a a student enrollment system that allows the user to add, display, modify, and remove student records.
+ * It uses a list to store student records and provides a menu-driven interface for user interaction.
  */
 public class EnrollmentSystem {
 
-     //A wrapper class to allow pass by reference for an integer
+     //A wrapper class to emulate pass by reference for an integer
     static class IntRef {
         public int value;
         public IntRef(int value) { this.value = value; }
