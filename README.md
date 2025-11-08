@@ -46,7 +46,7 @@ First, please clone this repository.
 
 ## Java
 
-You will need a Java JDK (Version 8 or higher) installed.
+You will need a Java JDK (Version 15 or higher) installed.
 Navigate to the directory with the Java file in it.
 
 Compile the program:
