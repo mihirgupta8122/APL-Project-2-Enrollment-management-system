@@ -64,7 +64,7 @@ python enrollment_system.py
 
 ### Output Preview
 Both programs have an identical console interface. The program starts, displays the main menu, and waits for user input.
-([Screenshot 2025-11-07 210722.png](<Screenshot 2025-11-07 210722.png>))
+([Output preview](<Screenshot 2025-11-07 210722.png>))
 
 ## Built With
 
