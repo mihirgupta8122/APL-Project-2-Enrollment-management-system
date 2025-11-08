@@ -8,12 +8,7 @@ import java.util.Scanner;
  */
 public class EnrollmentSystem {
 
-    /**
-     * A wrapper class to allow pass-by-reference for an integer.
-     * Since Java passes primitives like 'int' by value, we pass this IntRef
-     * by reference-value instead, which will let us
-     * change its internal value from inside  a method.
-     */
+     //A wrapper class to allow pass by reference for an integer
     static class IntRef {
         public int value;
         public IntRef(int value) { this.value = value; }
