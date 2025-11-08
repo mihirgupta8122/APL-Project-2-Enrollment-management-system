@@ -8,8 +8,8 @@ public class EnrollmentSystem {
         public IntRef(int value) { this.value = value; }
     }
 
-    static List<StudentRecord> student_list = new ArrayList<>();
-    static IntRef next_student_id = new IntRef(1000);
+    static List<StudentRecord> studentList = new ArrayList<>();
+    static IntRef nextStudentId = new IntRef(1000);
     static Scanner scanner = new Scanner(System.in);
 
     public static class StudentRecord {
@@ -70,17 +70,17 @@ public class EnrollmentSystem {
                 """
                 );
 
-            int user_choice = GetValidIntegerRange("Enter your choice: ", 0, 4);
+            int userChoice = getValidIntegerRange("Enter your choice: ", 0, 4);
 
-            if (user_choice == 1) {
-                AddStudent(student_list, next_student_id);
-            } else if (user_choice == 2) {
-                DisplayStudents(student_list);
-            } else if (user_choice == 3) {
-                ModifyStudent(student_list);
-            } else if (user_choice == 4) {
-                RemoveStudent(student_list);
-            } else if (user_choice == 0) {
+            if (userChoice == 1) {
+                addStudent(studentList, nextStudentId);
+            } else if (userChoice == 2) {
+                displayStudents(studentList);
+            } else if (userChoice == 3) {
+                modifyStudent(studentList);
+            } else if (userChoice == 4) {
+                removeStudent(studentList);
+            } else if (userChoice == 0) {
                 running = false;
                 System.out.println("\nExiting program. Goodbye!");
             }
@@ -88,43 +88,43 @@ public class EnrollmentSystem {
         scanner.close();
     }
 
-    public static void AddStudent(List<StudentRecord> student_list, IntRef next_student_id) {
+    public static void addStudent(List<StudentRecord> studentList, IntRef nextStudentId) {
         System.out.println("\n--- Add New Student ---");
-        StudentRecord student_to_add = CreateNewStudent(next_student_id.value);
-        student_list.add(student_to_add);
-        next_student_id.value = next_student_id.value + 1;
-        System.out.printf("%nStudent added successfully with ID: %d%n", student_to_add.id);
+        StudentRecord studentToAdd = createNewStudent(nextStudentId.value);
+        studentList.add(studentToAdd);
+        nextStudentId.value = nextStudentId.value + 1;
+        System.out.printf("%nStudent added successfully with ID: %d%n", studentToAdd.id);
     }
 
-    public static void DisplayStudents(List<StudentRecord> student_list) {
-        if (student_list.isEmpty()) {
+    public static void displayStudents(List<StudentRecord> studentList) {
+        if (studentList.isEmpty()) {
             System.out.println("\nNo students in the system.");
         } else {
             System.out.println("\n--- List of Enrolled Students ---");
-            for (StudentRecord student : student_list) {
+            for (StudentRecord student : studentList) {
                 System.out.println(student.toString());
             }
         }
     }
 
-    public static void ModifyStudent(List<StudentRecord> student_list) {
+    public static void modifyStudent(List<StudentRecord> studentList) {
         System.out.println("\n--- Modify Student Record ---");
-        int index = PromptAndFindStudentIndex(student_list);
+        int index = promptAndFindStudentIndex(studentList);
         if (index != -1) {
-            ModifyStudentMenu(student_list, index);
+            modifyStudentMenu(studentList, index);
             System.out.println("\nModifications saved.");
         }
     }
 
-    public static void RemoveStudent(List<StudentRecord> student_list) {
+    public static void removeStudent(List<StudentRecord> studentList) {
         System.out.println("\n--- Remove Student ---");
-        int index = PromptAndFindStudentIndex(student_list);
+        int index = promptAndFindStudentIndex(studentList);
         if (index != -1) {
-            StudentRecord student = student_list.get(index);
+            StudentRecord student = studentList.get(index);
             System.out.printf("Found student: %s %s%n", student.firstName, student.lastName);
-            String confirmation = GetYesNo("Are you sure you want to remove? (Y/N): ");
+            String confirmation = getYesNo("Are you sure you want to remove? (Y/N): ");
             if (confirmation.equals("Y")) {
-                student_list.remove(index);
+                studentList.remove(index);
                 System.out.println("\nStudent removed successfully.");
             } else {
                 System.out.println("\nRemoval cancelled.");
@@ -132,16 +132,16 @@ public class EnrollmentSystem {
         }
     }
 
-    public static String GetString(String prompt_message) {
-        System.out.print(prompt_message);
+    public static String getString(String promptMessage) {
+        System.out.print(promptMessage);
         return scanner.nextLine();
     }
 
-    public static int GetValidInteger(String prompt_message) {
+    public static int getValidInteger(String promptMessage) {
         boolean valid = false;
         int number = 0;
         while (!valid) {
-            System.out.print(prompt_message);
+            System.out.print(promptMessage);
             String input = scanner.nextLine();
             try {
                 number = Integer.parseInt(input.trim());
@@ -153,10 +153,10 @@ public class EnrollmentSystem {
         return number;
     }
 
-    public static int GetValidIntegerRange(String prompt_message, int min, int max) {
+    public static int getValidIntegerRange(String promptMessage, int min, int max) {
         int number;
         while (true) {
-            number = GetValidInteger(prompt_message);
+            number = getValidInteger(promptMessage);
             if (number >= min && number <= max) {
                 return number;
             } else {
@@ -165,11 +165,11 @@ public class EnrollmentSystem {
         }
     }
 
-    public static float GetValidFloat(String prompt_message) {
+    public static float getValidFloat(String promptMessage) {
         boolean valid = false;
         float number = 0.0f;
         while (!valid) {
-            System.out.print(prompt_message);
+            System.out.print(promptMessage);
             String input = scanner.nextLine();
             try {
                 number = Float.parseFloat(input.trim());
@@ -181,9 +181,9 @@ public class EnrollmentSystem {
         return number;
     }
 
-    public static String GetYesNo(String prompt_message) {
+    public static String getYesNo(String promptMessage) {
         while (true) {
-            System.out.print(prompt_message);
+            System.out.print(promptMessage);
             String input = scanner.nextLine().trim().toUpperCase();
             if (input.equals("Y") || input.equals("N")) {
                 return input;
@@ -193,10 +193,10 @@ public class EnrollmentSystem {
         }
     }
 
-    public static int FindStudentIndexByID(List<StudentRecord> student_list, int id_to_find) {
+    public static int findStudentIndexByID(List<StudentRecord> studentList, int idToFind) {
         int index = 0;
-        while (index < student_list.size()) {
-            if (student_list.get(index).id == id_to_find) {
+        while (index < studentList.size()) {
+            if (studentList.get(index).id == idToFind) {
                 return index;
             }
             index = index + 1;
@@ -204,41 +204,41 @@ public class EnrollmentSystem {
         return -1;
     }
 
-    public static int PromptAndFindStudentIndex(List<StudentRecord> student_list) {
-        int id_to_find = GetValidInteger("Enter Student ID: ");
-        int index = FindStudentIndexByID(student_list, id_to_find);
+    public static int promptAndFindStudentIndex(List<StudentRecord> studentList) {
+        int idToFind = getValidInteger("Enter Student ID: ");
+        int index = findStudentIndexByID(studentList, idToFind);
         if (index == -1) {
-            System.out.printf("%nStudent with ID %d not found.%n", id_to_find);
+            System.out.printf("%nStudent with ID %d not found.%n", idToFind);
         }
         return index;
     }
 
-    public static StudentRecord CreateNewStudent(int id) {
-        String fname = GetString("Enter First Name: ");
-        String lname = GetString("Enter Last Name: ");
-        String dob = GetString("Enter Date of Birth (YYYY-MM-DD): ");
-        String gender = GetString("Enter Gender: ");
-        float gpa = GetValidFloat("Enter Previous GPA: ");
-        String semester = GetString("Enter Current Semester (e.g. Fall 2026): ");
-        String program = GetString("Enter Program: ");
-        int num_courses = GetValidInteger("Enter Number of Courses: ");
-        StudentRecord new_student = new StudentRecord();
-        new_student.id = id;
-        new_student.firstName = fname;
-        new_student.lastName = lname;
-        new_student.dob = dob;
-        new_student.gender = gender;
-        new_student.gpa = gpa;
-        new_student.semester = semester;
-        new_student.program = program;
-        new_student.numCourses = num_courses;
-        return new_student;
+    public static StudentRecord createNewStudent(int id) {
+        String fname = getString("Enter First Name: ");
+        String lname = getString("Enter Last Name: ");
+        String dob = getString("Enter Date of Birth (YYYY-MM-DD): ");
+        String gender = getString("Enter Gender: ");
+        float gpa = getValidFloat("Enter Previous GPA: ");
+        String semester = getString("Enter Current Semester (e.g. Fall 2026): ");
+        String program = getString("Enter Program: ");
+        int numCourses = getValidInteger("Enter Number of Courses: ");
+        StudentRecord newStudent = new StudentRecord();
+        newStudent.id = id;
+        newStudent.firstName = fname;
+        newStudent.lastName = lname;
+        newStudent.dob = dob;
+        newStudent.gender = gender;
+        newStudent.gpa = gpa;
+        newStudent.semester = semester;
+        newStudent.program = program;
+        newStudent.numCourses = numCourses;
+        return newStudent;
     }
 
-    public static void ModifyStudentMenu(List<StudentRecord> student_list, int index) {
+    public static void modifyStudentMenu(List<StudentRecord> studentList, int index) {
         boolean modifying = true;
         while (modifying) {
-            StudentRecord student = student_list.get(index);
+            StudentRecord student = studentList.get(index);
             System.out.println(String.format(
                 """
 
@@ -253,33 +253,33 @@ public class EnrollmentSystem {
                 """, 
                 student.firstName, student.lastName, student.gpa, student.semester, student.program, student.numCourses));
 
-            int field_choice = GetValidIntegerRange("Enter field to modify: ", 0, 6);
+            int fieldChoice = getValidIntegerRange("Enter field to modify: ", 0, 6);
 
-            if (field_choice == 1) {
-                String new_val = GetString("Enter new First Name: ");
-                student.firstName = new_val;
+            if (fieldChoice == 1) {
+                String newVal = getString("Enter new First Name: ");
+                student.firstName = newVal;
                 System.out.println("First Name updated.");
-            } else if (field_choice == 2) {
-                String new_val = GetString("Enter new Last Name: ");
-                student.lastName = new_val;
+            } else if (fieldChoice == 2) {
+                String newVal = getString("Enter new Last Name: ");
+                student.lastName = newVal;
                 System.out.println("Last Name updated.");
-            } else if (field_choice == 3) {
-                float new_val = GetValidFloat("Enter new GPA: ");
-                student.gpa = new_val;
+            } else if (fieldChoice == 3) {
+                float newVal = getValidFloat("Enter new GPA: ");
+                student.gpa = newVal;
                 System.out.println("GPA updated.");
-            } else if (field_choice == 4) {
-                String new_val = GetString("Enter new Semester: ");
-                student.semester = new_val;
+            } else if (fieldChoice == 4) {
+                String newVal = getString("Enter new Semester: ");
+                student.semester = newVal;
                 System.out.println("Semester updated.");
-            } else if (field_choice == 5) {
-                String new_val = GetString("Enter new Program: ");
-                student.program = new_val;
+            } else if (fieldChoice == 5) {
+                String newVal = getString("Enter new Program: ");
+                student.program = newVal;
                 System.out.println("Program updated.");
-            } else if (field_choice == 6) {
-                int new_val = GetValidInteger("Enter new Number of Courses: ");
-                student.numCourses = new_val;
+            } else if (fieldChoice == 6) {
+                int newVal = getValidInteger("Enter new Number of Courses: ");
+                student.numCourses = newVal;
                 System.out.println("Number of courses updated.");
-            } else if (field_choice == 0) {
+            } else if (fieldChoice == 0) {
                 modifying = false;
             } 
         }
