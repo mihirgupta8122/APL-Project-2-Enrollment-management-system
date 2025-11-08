@@ -5,7 +5,7 @@
 ## Overview
 This application is a console based student enrollment system for SAIT, written in both Java and Python. It is suppose to allow the user to manage multiple student records by adding students, displaying all students on record, modifying a student's information, and removing them from the list.
 
-Coding the same thing in two seperate languages gives us a way to compare both of them when they are programmed to do the exact same thing, focusing on key concepts covered in class like:
+By coding the same scenario in two different languages, it gives us an easy way to compare both of the languages when they are programmed to do the exact same thing, we were focusing on key concepts that were covered in class like:
 
 1. Static vs. Dynamic Data Types and Type Binding
 
